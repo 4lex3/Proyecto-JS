@@ -1,17 +1,26 @@
 window.onload = () => {
+
     // Crear tarjetas
-    // crearTarjetas(filosofos)
+    crearTarjetas(filosofos)
+
 
     // Crear handlers para los botones de control
-    let botonCrearTarjeta = document.querySelector('.create-btn');
-    botonCrearTarjeta.addEventListener('click',crearNuevaTarjeta);
+    // let botonCrearTarjeta = document.querySelector('.create-btn');
+    // botonCrearTarjeta.addEventListener('click',crearNuevaTarjeta);
+
 }
 
 function crearTarjetas(filosofos) {
+
     filosofos.forEach((filosofo) => {
+
+
+
         // Creamos tarjeta vacía
         let tarjeta = document.createElement('div');
         tarjeta.classList.add('card');
+
+
         // Creamos imagen
         let imagen = document.createElement('img');
         imagen.src = filosofo.imagen;
@@ -19,33 +28,81 @@ function crearTarjetas(filosofos) {
         imagen.classList.add("photo");
         tarjeta.append(imagen);
 
+
         // Creamos caja de informacion
         let info = document.createElement('div');
         info.classList.add('card-info');
         tarjeta.append(info);
+
         // Creamos título
         let titulo = document.createElement('h3');
         titulo.classList.add('nombre');
         titulo.innerHTML = filosofo.nombre;
         info.append(titulo);
-        // Creamos fila de información (info-row)
+
+        //! Creamos fila de información (info-row)
         let filaInfo = document.createElement('div');
         filaInfo.classList.add('info-row');
         info.append(filaInfo);
 
-        // Añadimos info del país a filaInfo
+
+        //* Añadimos info del país a filaInfo
+        let divPais = document.createElement("div");       
+        divPais.classList.add("info-pais");
+
+        let banderaImg = document.createElement("img");
+        banderaImg.setAttribute("src", filosofo.pais.bandera);
+        banderaImg.setAttribute("alt", `Bandera de ${filosofo.pais.nombre}`); 
+
+        let banderaSpan = document.createElement("span");
+        banderaSpan.classList.add("pais");
+        banderaSpan.textContent = filosofo.pais.nombre;
+
+        divPais.append(banderaImg, banderaSpan);
+        filaInfo.append(divPais);
+
+        //* Añadimos info de la corriente a filaInfo
+        let divCorriente = document.createElement("div");
+        divCorriente.classList.add("info-corriente");
         
-        // Añadimos info de la corriente a filaInfo
+        let corrienteSpan = document.createElement("span");
+        corrienteSpan.textContent = "Corriente: ";
+
+        let corrienteFilosofo = document.createElement("span");
+        corrienteFilosofo.textContent = filosofo.corriente;
         
-        // Añadimos info del arma a filaInfo
+        divCorriente.append(corrienteSpan, corrienteFilosofo);
+        filaInfo.append(divCorriente);
         
 
-        // Añadimos caja de habilidades
+        //* Añadimos info del arma a filaInfo
+        let divArma = document.createElement("div");
+        divArma.classList.add("info-arma"); 
+        
+        let armaSpan = document.createElement("span");
+        armaSpan.textContent = "Arma: ";
+
+        let armaFilosofo = document.createElement("span");
+        armaFilosofo.textContent = filosofo.arma;
+
+        divArma.append(armaSpan, armaFilosofo);
+        filaInfo.append(divArma);
+
+
+        //* Añadimos caja de habilidades
         let habilidades = document.createElement('div');
         habilidades.classList.add('skills');
         info.append(habilidades);
+
+
+
+
+
+
+
         // Añadimos una a una las habilidades
         for (let infoHabilidad of filosofo.habilidades) {
+
             // Añadimos una caja de habilidad
             
             // Añadimos contenido caja de habilidad
@@ -57,16 +114,21 @@ function crearTarjetas(filosofos) {
             
         }
 
+
         // Añadimos tarjeta creada al contenedor de tarjetas
         let contenedor = document.querySelector('.cards-container');
         contenedor.append(tarjeta);
+
     })
+
+
 }
 
 function eliminarTarjeta() {
 }
 
 function ordenarNombreAZ() {
+
     let tarjetas = Array.from(document.querySelectorAll('.card'));
     let tarjetasOrdenadas = tarjetas.sort((tarjetaA, tarjetaB) => {
         let nombre1 = tarjetaA.querySelector('h3').innerHTML;
@@ -77,29 +139,39 @@ function ordenarNombreAZ() {
     // Eliminar totes les targetes de l'array 'tarjeta'
     // Completar codi
 
+
     // Afegir 'tarjetasOrdenadas' al contenidor de cards
     let contenedor = document.querySelector('.cards-container');
     // Completar codi
 }
 
+
 function ordenarNombreZA() {
 }
 
+
 function crearNuevaTarjeta(event) {
+
     event.preventDefault();
+
     let nuevoFilosofo = {};
     nuevoFilosofo.nombre = document.querySelector('.create-card-form .nombre').value;
     nuevoFilosofo.imagen = document.querySelector('.create-card-form .foto').value;
     nuevoFilosofo.pais = {};
     nuevoFilosofo.pais.nombre = document.querySelector('.create-card-form .pais').value;
+
     // Completar la función
 
     // crearTarjetas(nuevoFilosofo);
+
 }
 
 function parsearTarjetas(tarjetas){
+
     let filosofosParseados = [];
+
     for (let tarjeta of tarjetas){
+
         let filosofo = {};
         filosofo.nombre = tarjeta.querySelector('.nombre').innerHTML;
         filosofo.imagen = tarjeta.querySelector('.photo').src;
@@ -107,18 +179,22 @@ function parsearTarjetas(tarjetas){
         // Completar funció
         
         let habilidades = tarjeta.querySelectorAll('.skill');
+
         for (let habilidad of habilidades){
             let habilidadParaGuardar = {};
             // Completar funció
         }
         filosofosParseados.push(filosofo);
     }
+
     return filosofosParseados;
 }
 
 function guardarTarjetas(){
+
     let tarjetas = Array.from(document.querySelectorAll('.card'));
     localStorage.setItem('tarjetas',JSON.stringify(parsearTarjetas(tarjetas)));
+
 }
 
 
@@ -126,7 +202,9 @@ function cargarTarjetas() {
 }
 
 const filosofos = [
+
     {
+
         nombre: "Platón",
         imagen: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Plato_Pio-Clemetino_Inv305.jpg/1200px-Plato_Pio-Clemetino_Inv305.jpg",
         pais: {
@@ -152,8 +230,10 @@ const filosofos = [
             nivel: 4
         }
         ]
+
     },
     {
+
         nombre: "Aristóteles",
         imagen: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdXUwy_fFGOJ2vwOMpwtJPyXc9HVb06HSRsbembn7IPKq6D1YitIra2WFM4Gu2rm6yHRs&usqp=CAU",
         pais: {
@@ -208,6 +288,7 @@ const filosofos = [
         ]
     },
     {
+
         nombre: "Kant",
         imagen: "https://i.pinimg.com/736x/20/89/7f/20897f915acb5124893a278c395382ed.jpg",
         pais: {
@@ -233,8 +314,10 @@ const filosofos = [
             nivel: 3
         }
         ]
+
     },
     {
+
         nombre: "Hume",
         imagen: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSiFZYg2MiOQSXbkBvFP-T3vW9pnhLW5qDioA&s",
         pais: {
@@ -260,8 +343,10 @@ const filosofos = [
             nivel: 3
         }
         ]
+
     },
     {
+
         nombre: "Arendt",
         imagen: "https://efeminista.com/wp-content/uploads/2021/09/Arendt-Hannah-1-e1576158475623.jpg",
         pais: {
@@ -287,5 +372,7 @@ const filosofos = [
             nivel: 3
         }
         ]
+
     }
+
 ]

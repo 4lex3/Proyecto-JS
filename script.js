@@ -90,30 +90,48 @@ function crearTarjetas(filosofos) {
 
 
         //* Añadimos caja de habilidades
-        let habilidades = document.createElement('div');
-        habilidades.classList.add('skills');
-        info.append(habilidades);
+        let habilidadesDiv = document.createElement('div');
+        habilidadesDiv.classList.add('skills');
 
 
+        // info.append(habilidades);
 
 
-
-
-
-        // Añadimos una a una las habilidades
+        //* Añadimos una a una las habilidades
         for (let infoHabilidad of filosofo.habilidades) {
 
-            // Añadimos una caja de habilidad
+            //* Añadimos una caja de habilidad
+            let habilidadDiv = document.createElement("div");            
+            habilidadDiv.classList.add("skill");
+
+
+            //* 1.Icono de habilidad
+            let habilidadIcon = document.createElement("img");
+            habilidadIcon.setAttribute("src", "https://via.placeholder.com/16");
+            habilidadDiv.setAttribute("alt", `Icono de ${infoHabilidad.habilidad}`);
+
             
-            // Añadimos contenido caja de habilidad
-            // 1.Icono de habilidad
+            //* 2.Etiqueta de habilidad
+            let habilidadSpan = document.createElement("span");
+            habilidadSpan.textContent = infoHabilidad.habilidad;
             
-            // 2.Etiqueta de habilidad
-            
-            // 2.Barra de habilidad
-            
+            //* 2.Barra de habilidad
+            let skillBarDiv = document.createElement("div");
+            skillBarDiv.classList.add("skill-bar");
+
+            let skillBar = document.createElement("div");
+            skillBar.classList.add("level");
+            skillBar.setAttribute("style", `width: ${infoHabilidad.nivel / 4 * 100 }%;`) 
+
+            skillBarDiv.append(skillBar);
+
+            //* Poner todo dentro:
+            habilidadDiv.append(habilidadIcon, habilidadSpan, skillBarDiv);
+            habilidadesDiv.append(habilidadDiv); 
         }
 
+
+        info.append(habilidadesDiv)
 
         // Añadimos tarjeta creada al contenedor de tarjetas
         let contenedor = document.querySelector('.cards-container');

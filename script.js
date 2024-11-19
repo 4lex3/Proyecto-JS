@@ -8,6 +8,11 @@ window.onload = () => {
     let botonCrearTarjeta = document.querySelector('.create-btn');
     botonCrearTarjeta.addEventListener('click',crearNuevaTarjeta);
 
+
+    //* Handlers de Ordenacion:    
+    const buttons = document.getElementsByClassName("sort-btn");
+    buttons[0].addEventListener("click", ordenarNombreAZ);
+
 }
 
 function crearTarjetas(filosofos) {
@@ -158,6 +163,7 @@ function eliminarTarjeta(e) {
 function ordenarNombreAZ() {
 
     let tarjetas = Array.from(document.querySelectorAll('.card'));
+
     let tarjetasOrdenadas = tarjetas.sort((tarjetaA, tarjetaB) => {
         let nombre1 = tarjetaA.querySelector('h3').innerHTML;
         let nombre2 = tarjetaB.querySelector('h3').innerHTML;
@@ -165,16 +171,23 @@ function ordenarNombreAZ() {
     });
 
     // Eliminar totes les targetes de l'array 'tarjeta'
-    // Completar codi
+    for (let tarjeta of tarjetas) {
+        tarjeta.remove();
+    }
 
 
     // Afegir 'tarjetasOrdenadas' al contenidor de cards
     let contenedor = document.querySelector('.cards-container');
-    // Completar codi
+    
+    for (let tarjeta of tarjetasOrdenadas) {
+        contenedor.append(tarjeta);
+    }
 }
 
 
 function ordenarNombreZA() {
+
+
 }
 
 
@@ -184,7 +197,6 @@ function crearNuevaTarjeta(event) {
 
     const habilidades = document.querySelectorAll(".create-card-form .skills");
 
-    // console.log(habilidades);
     let nuevoFilosofo = {
         "nombre": document.querySelector('.create-card-form .nombre').value,
         "imagen": document.querySelector('.create-card-form .foto').value,
@@ -465,7 +477,7 @@ const filosofos = [
         imagen: "https://scontent-mad1-1.xx.fbcdn.net/v/t39.30808-1/448278806_435270612719791_2551668111131197289_n.jpg?stp=cp0_dst-jpg_e15_q65_s120x120&_nc_cat=101&ccb=1-7&_nc_sid=6738e8&_nc_ohc=Y0ugi8b2a3kQ7kNvgF3h2x7&_nc_zt=24&_nc_ht=scontent-mad1-1.xx&_nc_gid=AfyV8DGzagJHbwY_90-VBvW&oh=00_AYDsDcaqxiLb_nZ0gkfSKm1nrEaAdRPlVSlu8SrQHjlc2g&oe=67428241",
         pais: {
             nombre: "Noruega",
-            bandera: ""
+            bandera: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Flag_of_Germany.svg/255px-Flag_of_Germany.svg.png"
         },
         corriente: "El lethal mi adiccion 🤑",
         arma: "Pala",
@@ -485,35 +497,6 @@ const filosofos = [
             {
                 habilidad: "Innovación",
                 nivel: 3
-            }
-        ]
-    },
-    {
-
-        nombre: "Berni",
-        imagen: "./filosofos/berni.jpeg",
-        pais: {
-            nombre: "Alemania (nazi)",
-            bandera: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Flag_of_Germany.svg/255px-Flag_of_Germany.svg.png"
-        },
-        corriente: "Adiccion a las apuestas",
-        arma: "Pokemon card",
-        habilidades: [
-            {
-                habilidad: "Sabiduría",
-                nivel: 1
-            },
-            {
-                habilidad: "Oratoria",
-                nivel: 4
-            },
-            {
-                habilidad: "Lógica",
-                nivel: 3
-            },
-            {
-                habilidad: "Innovación",
-                nivel: 4
             }
         ]
     }

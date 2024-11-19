@@ -13,6 +13,9 @@ window.onload = () => {
     const buttons = document.getElementsByClassName("sort-btn");
     buttons[0].addEventListener("click", ordenarNombreAZ);
 
+
+    buttons[1].addEventListener("click", ordenarNombreZA);
+
 }
 
 function crearTarjetas(filosofos) {
@@ -59,196 +62,215 @@ function crearTarjetas(filosofos) {
         banderaImg.setAttribute("src", filosofo.pais.bandera);
         banderaImg.setAttribute("alt", `Bandera de ${filosofo.pais.nombre}`); 
 
-        let banderaSpan = document.createElement("span");
-        banderaSpan.classList.add("pais");
-        banderaSpan.textContent = filosofo.pais.nombre;
+            let banderaSpan = document.createElement("span");
+            banderaSpan.classList.add("pais");
+            banderaSpan.textContent = filosofo.pais.nombre;
 
-        divPais.append(banderaImg, banderaSpan);
-        filaInfo.append(divPais);
+            divPais.append(banderaImg, banderaSpan);
+            filaInfo.append(divPais);
 
-        //* Añadimos info de la corriente a filaInfo
-        let divCorriente = document.createElement("div");
-        divCorriente.classList.add("info-corriente");
-        
-        let corrienteSpan = document.createElement("span");
-        corrienteSpan.textContent = "Corriente: ";
-
-        let corrienteFilosofo = document.createElement("span");
-        corrienteFilosofo.textContent = filosofo.corriente;
-        
-        divCorriente.append(corrienteSpan, corrienteFilosofo);
-        filaInfo.append(divCorriente);
-        
-
-        //* Añadimos info del arma a filaInfo
-        let divArma = document.createElement("div");
-        divArma.classList.add("info-arma"); 
-        
-        let armaSpan = document.createElement("span");
-        armaSpan.textContent = "Arma: ";
-
-        let armaFilosofo = document.createElement("span");
-        armaFilosofo.textContent = filosofo.arma;
-
-        divArma.append(armaSpan, armaFilosofo);
-        filaInfo.append(divArma);
-
-
-        //* Añadimos caja de habilidades
-        let habilidadesDiv = document.createElement('div');
-        habilidadesDiv.classList.add('skills');
-
-
-        // info.append(habilidades);
-
-
-        //* Añadimos una a una las habilidades
-        for (let infoHabilidad of filosofo.habilidades) {
-
-            //* Añadimos una caja de habilidad
-            let habilidadDiv = document.createElement("div");            
-            habilidadDiv.classList.add("skill");
-
-
-            //* 1.Icono de habilidad
-            let habilidadIcon = document.createElement("img");
-            habilidadIcon.setAttribute("src", "https://via.placeholder.com/16");
-            habilidadDiv.setAttribute("alt", `Icono de ${infoHabilidad.habilidad}`);
-
+            //* Añadimos info de la corriente a filaInfo
+            let divCorriente = document.createElement("div");
+            divCorriente.classList.add("info-corriente");
             
-            //* 2.Etiqueta de habilidad
-            let habilidadSpan = document.createElement("span");
-            habilidadSpan.textContent = infoHabilidad.habilidad;
+            let corrienteSpan = document.createElement("span");
+            corrienteSpan.textContent = "Corriente: ";
+
+            let corrienteFilosofo = document.createElement("span");
+            corrienteFilosofo.textContent = filosofo.corriente;
             
-            //* 3.Barra de habilidad
-            let skillBarDiv = document.createElement("div");
-            skillBarDiv.classList.add("skill-bar");
+            divCorriente.append(corrienteSpan, corrienteFilosofo);
+            filaInfo.append(divCorriente);
+            
 
-            let skillBar = document.createElement("div");
-            skillBar.classList.add("level");
-            skillBar.setAttribute("style", `width: ${infoHabilidad.nivel / 4 * 100 }%;`) 
+            //* Añadimos info del arma a filaInfo
+            let divArma = document.createElement("div");
+            divArma.classList.add("info-arma"); 
+            
+            let armaSpan = document.createElement("span");
+            armaSpan.textContent = "Arma: ";
 
-            skillBarDiv.append(skillBar);
+            let armaFilosofo = document.createElement("span");
+            armaFilosofo.textContent = filosofo.arma;
 
-            //* Poner todo dentro:
-            habilidadDiv.append(habilidadIcon, habilidadSpan, skillBarDiv);
-            habilidadesDiv.append(habilidadDiv); 
+            divArma.append(armaSpan, armaFilosofo);
+            filaInfo.append(divArma);
+
+
+            //* Añadimos caja de habilidades
+            let habilidadesDiv = document.createElement('div');
+            habilidadesDiv.classList.add('skills');
+
+
+            // info.append(habilidades);
+
+
+            //* Añadimos una a una las habilidades
+            for (let infoHabilidad of filosofo.habilidades) {
+
+                //* Añadimos una caja de habilidad
+                let habilidadDiv = document.createElement("div");            
+                habilidadDiv.classList.add("skill");
+
+
+                //* 1.Icono de habilidad
+                let habilidadIcon = document.createElement("img");
+                habilidadIcon.setAttribute("src", "https://via.placeholder.com/16");
+                habilidadDiv.setAttribute("alt", `Icono de ${infoHabilidad.habilidad}`);
+
+                
+                //* 2.Etiqueta de habilidad
+                let habilidadSpan = document.createElement("span");
+                habilidadSpan.textContent = infoHabilidad.habilidad;
+                
+                //* 3.Barra de habilidad
+                let skillBarDiv = document.createElement("div");
+                skillBarDiv.classList.add("skill-bar");
+
+                let skillBar = document.createElement("div");
+                skillBar.classList.add("level");
+                skillBar.setAttribute("style", `width: ${infoHabilidad.nivel / 4 * 100 }%;`) 
+
+                skillBarDiv.append(skillBar);
+
+                //* Poner todo dentro:
+                habilidadDiv.append(habilidadIcon, habilidadSpan, skillBarDiv);
+                habilidadesDiv.append(habilidadDiv); 
+            }
+
+            info.append(habilidadesDiv)
+            let botonEliminar = document.createElement("div"); 
+
+            botonEliminar.innerHTML=  "&#x2716";
+            botonEliminar.classList.add("botonEliminar");
+
+            botonEliminar.addEventListener("click", eliminarTarjeta);
+
+            tarjeta.append(botonEliminar);
+
+
+            //* Añadimos tarjeta creada al contenedor de tarjetas
+            let contenedor = document.querySelector('.cards-container');
+            contenedor.append(tarjeta);
+
+        })
+
+    }
+
+    function eliminarTarjeta(e) {
+        e.target.parentElement.remove();
+    }
+
+
+
+    function ordenarNombreAZ() {
+
+        let tarjetas = Array.from(document.querySelectorAll('.card'));
+
+        let tarjetasOrdenadas = tarjetas.sort((tarjetaA, tarjetaB) => {
+            let nombre1 = tarjetaA.querySelector('h3').innerHTML;
+            let nombre2 = tarjetaB.querySelector('h3').innerHTML;
+            return nombre1.localeCompare(nombre2);
+        });
+
+        // Eliminar totes les targetes de l'array 'tarjeta'
+        for (let tarjeta of tarjetas) {
+            tarjeta.remove();
         }
 
-        info.append(habilidadesDiv)
-        let botonEliminar = document.createElement("div"); 
 
-        botonEliminar.innerHTML=  "&#x2716";
-        botonEliminar.classList.add("botonEliminar");
-
-        botonEliminar.addEventListener("click", eliminarTarjeta);
-
-        tarjeta.append(botonEliminar);
-
-
-        //* Añadimos tarjeta creada al contenedor de tarjetas
+        // Afegir 'tarjetasOrdenadas' al contenidor de cards
         let contenedor = document.querySelector('.cards-container');
-        contenedor.append(tarjeta);
-
-    })
-
-}
-
-function eliminarTarjeta(e) {
-    e.target.parentElement.remove();
-}
-
-
-
-function ordenarNombreAZ() {
-
-    let tarjetas = Array.from(document.querySelectorAll('.card'));
-
-    let tarjetasOrdenadas = tarjetas.sort((tarjetaA, tarjetaB) => {
-        let nombre1 = tarjetaA.querySelector('h3').innerHTML;
-        let nombre2 = tarjetaB.querySelector('h3').innerHTML;
-        return nombre1.localeCompare(nombre2);
-    });
-
-    // Eliminar totes les targetes de l'array 'tarjeta'
-    for (let tarjeta of tarjetas) {
-        tarjeta.remove();
-    }
-
-
-    // Afegir 'tarjetasOrdenadas' al contenidor de cards
-    let contenedor = document.querySelector('.cards-container');
-    
-    for (let tarjeta of tarjetasOrdenadas) {
-        contenedor.append(tarjeta);
-    }
-}
-
-
-function ordenarNombreZA() {
-
-
-}
-
-
-function crearNuevaTarjeta(event) {
-
-    event.preventDefault();
-
-    const habilidades = document.querySelectorAll(".create-card-form .skills");
-
-    let nuevoFilosofo = {
-        "nombre": document.querySelector('.create-card-form .nombre').value,
-        "imagen": document.querySelector('.create-card-form .foto').value,
-        "pais": {
-            "nombre": document.querySelector('.create-card-form .pais').value,
-            "bandera": document.querySelector(".create-card-form .bandera").value,
-        },
-        "arma": document.getElementById("weapon").value,
-        "habilidades": [
-            {
-                "habilidad":"Sabiduría",
-                "nivel": habilidades[0].value
-            },
-            {
-                "habilidad":"Oratoria",
-                "nivel": habilidades[1].value
-            },
-            {
-                "habilidad":"Lógica",
-                "nivel": habilidades[2].value
-            },
-            {
-                "habilidad":"Innovación",
-                "nivel": habilidades[3].value
-            }
-        ]
-    };
-
-    // Completar la función
-
-
-
-    crearTarjetas([nuevoFilosofo]);
-
-}
-
-function parsearTarjetas(tarjetas){
-
-    let filosofosParseados = [];
-
-    for (let tarjeta of tarjetas){
-
-        let filosofo = {};
-        filosofo.nombre = tarjeta.querySelector('.nombre').innerHTML;
-        filosofo.imagen = tarjeta.querySelector('.photo').src;
-        filosofo.pais = {};
-        // Completar funció
         
-        let habilidades = tarjeta.querySelectorAll('.skill');
+        for (let tarjeta of tarjetasOrdenadas) {
+            contenedor.append(tarjeta);
+        }
 
-        for (let habilidad of habilidades){
-            let habilidadParaGuardar = {};
+    }
+
+
+    function ordenarNombreZA() {
+
+        let tarjetas = Array.from(document.querySelectorAll('.card'));
+
+
+        let tarjetasOrdenadasZA = tarjetas.sort((tarjetaA, tarjetaB) => {
+            let nombre1 = tarjetaA.querySelector('h3').innerHTML;
+            let nombre2 = tarjetaB.querySelector('h3').innerHTML;
+            return nombre2.localeCompare(nombre1);
+        });
+
+        for (let tarjeta of tarjetas) {
+            tarjeta.remove();
+        }
+
+        let contenedor = document.querySelector('.cards-container');
+        
+        for (let tarjeta of tarjetasOrdenadasZA) {
+            contenedor.append(tarjeta);
+        }
+
+    }
+
+
+    function crearNuevaTarjeta(event) {
+
+        event.preventDefault();
+
+        const habilidades = document.querySelectorAll(".create-card-form .skills");
+
+        let nuevoFilosofo = {
+            "nombre": document.querySelector('.create-card-form .nombre').value,
+            "imagen": document.querySelector('.create-card-form .foto').value,
+            "pais": {
+                "nombre": document.querySelector('.create-card-form .pais').value,
+                "bandera": document.querySelector(".create-card-form .bandera").value,
+            },
+            "arma": document.getElementById("weapon").value,
+            "habilidades": [
+                {
+                    "habilidad":"Sabiduría",
+                    "nivel": habilidades[0].value
+                },
+                {
+                    "habilidad":"Oratoria",
+                    "nivel": habilidades[1].value
+                },
+                {
+                    "habilidad":"Lógica",
+                    "nivel": habilidades[2].value
+                },
+                {
+                    "habilidad":"Innovación",
+                    "nivel": habilidades[3].value
+                }
+            ]
+        };
+
+        // Completar la función
+
+
+
+        crearTarjetas([nuevoFilosofo]);
+
+    }
+
+    function parsearTarjetas(tarjetas){
+
+        let filosofosParseados = [];
+
+        for (let tarjeta of tarjetas){
+
+            let filosofo = {};
+            filosofo.nombre = tarjeta.querySelector('.nombre').innerHTML;
+            filosofo.imagen = tarjeta.querySelector('.photo').src;
+            filosofo.pais = {};
+            // Completar funció
+            
+            let habilidades = tarjeta.querySelectorAll('.skill');
+
+            for (let habilidad of habilidades){
+                let habilidadParaGuardar = {};
             // Completar funció
         }
         filosofosParseados.push(filosofo);

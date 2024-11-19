@@ -115,7 +115,7 @@ function crearTarjetas(filosofos) {
             let habilidadSpan = document.createElement("span");
             habilidadSpan.textContent = infoHabilidad.habilidad;
             
-            //* 2.Barra de habilidad
+            //* 3.Barra de habilidad
             let skillBarDiv = document.createElement("div");
             skillBarDiv.classList.add("skill-bar");
 
@@ -130,20 +130,30 @@ function crearTarjetas(filosofos) {
             habilidadesDiv.append(habilidadDiv); 
         }
 
-
         info.append(habilidadesDiv)
+        let botonEliminar = document.createElement("div"); 
 
-        // Añadimos tarjeta creada al contenedor de tarjetas
+        botonEliminar.innerHTML=  "&#x2716";
+        botonEliminar.classList.add("botonEliminar");
+
+        botonEliminar.addEventListener("click", eliminarTarjeta);
+
+        tarjeta.append(botonEliminar);
+
+
+        //* Añadimos tarjeta creada al contenedor de tarjetas
         let contenedor = document.querySelector('.cards-container');
         contenedor.append(tarjeta);
 
     })
 
-
 }
 
-function eliminarTarjeta() {
+function eliminarTarjeta(e) {
+    e.target.parentElement.remove();
 }
+
+
 
 function ordenarNombreAZ() {
 

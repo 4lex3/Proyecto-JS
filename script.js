@@ -5,8 +5,8 @@ window.onload = () => {
 
 
     // Crear handlers para los botones de control
-    // let botonCrearTarjeta = document.querySelector('.create-btn');
-    // botonCrearTarjeta.addEventListener('click',crearNuevaTarjeta);
+    let botonCrearTarjeta = document.querySelector('.create-btn');
+    botonCrearTarjeta.addEventListener('click',crearNuevaTarjeta);
 
 }
 
@@ -182,15 +182,42 @@ function crearNuevaTarjeta(event) {
 
     event.preventDefault();
 
-    let nuevoFilosofo = {};
-    nuevoFilosofo.nombre = document.querySelector('.create-card-form .nombre').value;
-    nuevoFilosofo.imagen = document.querySelector('.create-card-form .foto').value;
-    nuevoFilosofo.pais = {};
-    nuevoFilosofo.pais.nombre = document.querySelector('.create-card-form .pais').value;
+    const habilidades = document.querySelectorAll(".create-card-form .skills");
+
+    // console.log(habilidades);
+    let nuevoFilosofo = {
+        "nombre": document.querySelector('.create-card-form .nombre').value,
+        "imagen": document.querySelector('.create-card-form .foto').value,
+        "pais": {
+            "nombre": document.querySelector('.create-card-form .pais').value,
+            "bandera": document.querySelector(".create-card-form .bandera").value,
+        },
+        "arma": document.getElementById("weapon").value,
+        "habilidades": [
+            {
+                "habilidad":"Sabiduría",
+                "nivel": habilidades[0].value
+            },
+            {
+                "habilidad":"Oratoria",
+                "nivel": habilidades[1].value
+            },
+            {
+                "habilidad":"Lógica",
+                "nivel": habilidades[2].value
+            },
+            {
+                "habilidad":"Innovación",
+                "nivel": habilidades[3].value
+            }
+        ]
+    };
 
     // Completar la función
 
-    // crearTarjetas(nuevoFilosofo);
+
+
+    crearTarjetas([nuevoFilosofo]);
 
 }
 
@@ -354,22 +381,23 @@ const filosofos = [
         },
         corriente: "Empirismo",
         arma: "Escepticismo",
-        habilidades: [{
-            habilidad: "Sabiduría",
-            nivel: 3
-        },
-        {
-            habilidad: "Oratoria",
-            nivel: 3
-        },
-        {
-            habilidad: "Lógica",
-            nivel: 3
-        },
-        {
-            habilidad: "Innovación",
-            nivel: 3
-        }
+        habilidades: [
+            {
+                habilidad: "Sabiduría",
+                nivel: 3
+            },
+            {
+                habilidad: "Oratoria",
+                nivel: 3
+            },
+            {
+                habilidad: "Lógica",
+                nivel: 3
+            },
+            {
+                habilidad: "Innovación",
+                nivel: 3
+            }
         ]
 
     },
@@ -383,24 +411,110 @@ const filosofos = [
         },
         corriente: "Fenomenología",
         arma: "Parresía",
-        habilidades: [{
-            habilidad: "Sabiduría",
-            nivel: 3
-        },
-        {
-            habilidad: "Oratoria",
-            nivel: 2
-        },
-        {
-            habilidad: "Lógica",
-            nivel: 2
-        },
-        {
-            habilidad: "Innovación",
-            nivel: 3
-        }
+        habilidades: [
+            {
+                habilidad: "Sabiduría",
+                nivel: 3
+            },
+            {
+                habilidad: "Oratoria",
+                nivel: 2
+            },
+            {
+                habilidad: "Lógica",
+                nivel: 2
+            },
+            {
+                habilidad: "Innovación",
+                nivel: 3
+            }
         ]
+    },
+    {
 
+        nombre: "Berni",
+        imagen: "./filosofos/berni.jpeg",
+        pais: {
+            nombre: "Alemania (nazi)",
+            bandera: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Flag_of_Germany.svg/255px-Flag_of_Germany.svg.png"
+        },
+        corriente: "Adiccion a las apuestas 🤑",
+        arma: "Pokemon card",
+        habilidades: [
+            {
+                habilidad: "Sabiduría",
+                nivel: 1
+            },
+            {
+                habilidad: "Oratoria",
+                nivel: 4
+            },
+            {
+                habilidad: "Lógica",
+                nivel: 3
+            },
+            {
+                habilidad: "Innovación",
+                nivel: 4
+            }
+        ]
+    },
+    {
+
+        nombre: "Albharo",
+        imagen: "https://scontent-mad1-1.xx.fbcdn.net/v/t39.30808-1/448278806_435270612719791_2551668111131197289_n.jpg?stp=cp0_dst-jpg_e15_q65_s120x120&_nc_cat=101&ccb=1-7&_nc_sid=6738e8&_nc_ohc=Y0ugi8b2a3kQ7kNvgF3h2x7&_nc_zt=24&_nc_ht=scontent-mad1-1.xx&_nc_gid=AfyV8DGzagJHbwY_90-VBvW&oh=00_AYDsDcaqxiLb_nZ0gkfSKm1nrEaAdRPlVSlu8SrQHjlc2g&oe=67428241",
+        pais: {
+            nombre: "Noruega",
+            bandera: ""
+        },
+        corriente: "El lethal mi adiccion 🤑",
+        arma: "Pala",
+        habilidades: [
+            {
+                habilidad: "Sabiduría",
+                nivel: 4
+            },
+            {
+                habilidad: "Oratoria",
+                nivel: 3
+            },
+            {
+                habilidad: "Lógica",
+                nivel: 3
+            },
+            {
+                habilidad: "Innovación",
+                nivel: 3
+            }
+        ]
+    },
+    {
+
+        nombre: "Berni",
+        imagen: "./filosofos/berni.jpeg",
+        pais: {
+            nombre: "Alemania (nazi)",
+            bandera: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Flag_of_Germany.svg/255px-Flag_of_Germany.svg.png"
+        },
+        corriente: "Adiccion a las apuestas",
+        arma: "Pokemon card",
+        habilidades: [
+            {
+                habilidad: "Sabiduría",
+                nivel: 1
+            },
+            {
+                habilidad: "Oratoria",
+                nivel: 4
+            },
+            {
+                habilidad: "Lógica",
+                nivel: 3
+            },
+            {
+                habilidad: "Innovación",
+                nivel: 4
+            }
+        ]
     }
-
 ]

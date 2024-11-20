@@ -1,525 +1,581 @@
 window.onload = () => {
+  // Crear tarjetas
+  crearTarjetas(filosofos);
 
-    // Crear tarjetas
-    crearTarjetas(filosofos)
+  // Crear handlers para los botones de control
+  let botonCrearTarjeta = document.querySelector(".create-btn");
+  botonCrearTarjeta.addEventListener("click", crearNuevaTarjeta);
 
+  //* Handlers de Ordenacion:
+  const buttons = document.getElementsByClassName("sort-btn");
+  buttons[0].addEventListener("click", ordenarNombreAZ);
 
-    // Crear handlers para los botones de control
-    let botonCrearTarjeta = document.querySelector('.create-btn');
-    botonCrearTarjeta.addEventListener('click',crearNuevaTarjeta);
+  buttons[1].addEventListener("click", ordenarNombreZA);
 
+  //* Handlers de Guardado:
+  const saveButton = document.querySelector(".save-btn");
+  const loadButton = document.querySelector(".load-btn");
 
-    //* Handlers de Ordenacion:    
-    const buttons = document.getElementsByClassName("sort-btn");
-    buttons[0].addEventListener("click", ordenarNombreAZ);
-
-
-    buttons[1].addEventListener("click", ordenarNombreZA);
-
-}
+  saveButton.addEventListener("click", guardarTarjetas);
+  loadButton.addEventListener("click", cargarTarjetas);
+};
 
 function crearTarjetas(filosofos) {
+  filosofos.forEach((filosofo) => {
+    // Creamos tarjeta vacía
+    let tarjeta = document.createElement("div");
+    tarjeta.classList.add("card");
 
-    filosofos.forEach((filosofo) => {
+    // Creamos imagen
+    let imagen = document.createElement("img");
+    imagen.src = filosofo.imagen;
+    imagen.alt = `Foto de ${filosofo.nombre}`;
+    imagen.classList.add("photo");
+    tarjeta.append(imagen);
 
+    // Creamos caja de informacion
+    let info = document.createElement("div");
+    info.classList.add("card-info");
+    tarjeta.append(info);
 
+    // Creamos título
+    let titulo = document.createElement("h3");
+    titulo.classList.add("nombre");
+    titulo.innerHTML = filosofo.nombre;
+    info.append(titulo);
 
-        // Creamos tarjeta vacía
-        let tarjeta = document.createElement('div');
-        tarjeta.classList.add('card');
+    //! Creamos fila de información (info-row)
+    let filaInfo = document.createElement("div");
+    filaInfo.classList.add("info-row");
+    info.append(filaInfo);
 
+    //* Añadimos info del país a filaInfo
+    let divPais = document.createElement("div");
+    divPais.classList.add("info-pais");
 
-        // Creamos imagen
-        let imagen = document.createElement('img');
-        imagen.src = filosofo.imagen;
-        imagen.alt = `Foto de ${filosofo.nombre}`;
-        imagen.classList.add("photo");
-        tarjeta.append(imagen);
+    let banderaImg = document.createElement("img");
+    banderaImg.setAttribute("src", filosofo.pais.bandera);
+    banderaImg.setAttribute("alt", `Bandera de ${filosofo.pais.nombre}`);
 
+    let banderaSpan = document.createElement("span");
+    banderaSpan.classList.add("pais");
+    banderaSpan.textContent = filosofo.pais.nombre;
 
-        // Creamos caja de informacion
-        let info = document.createElement('div');
-        info.classList.add('card-info');
-        tarjeta.append(info);
+    divPais.append(banderaImg, banderaSpan);
+    filaInfo.append(divPais);
 
-        // Creamos título
-        let titulo = document.createElement('h3');
-        titulo.classList.add('nombre');
-        titulo.innerHTML = filosofo.nombre;
-        info.append(titulo);
+    //* Añadimos info de la corriente a filaInfo
+    let divCorriente = document.createElement("div");
+    divCorriente.classList.add("info-corriente");
 
-        //! Creamos fila de información (info-row)
-        let filaInfo = document.createElement('div');
-        filaInfo.classList.add('info-row');
-        info.append(filaInfo);
+    let corrienteSpan = document.createElement("span");
+    corrienteSpan.textContent = "Corriente: ";
 
+    let corrienteFilosofo = document.createElement("span");
+    corrienteFilosofo.textContent = filosofo.corriente;
 
-        //* Añadimos info del país a filaInfo
-        let divPais = document.createElement("div");       
-        divPais.classList.add("info-pais");
+    divCorriente.append(corrienteSpan, corrienteFilosofo);
+    filaInfo.append(divCorriente);
 
-        let banderaImg = document.createElement("img");
-        banderaImg.setAttribute("src", filosofo.pais.bandera);
-        banderaImg.setAttribute("alt", `Bandera de ${filosofo.pais.nombre}`); 
+    //* Añadimos info del arma a filaInfo
+    let divArma = document.createElement("div");
+    divArma.classList.add("info-arma");
 
-            let banderaSpan = document.createElement("span");
-            banderaSpan.classList.add("pais");
-            banderaSpan.textContent = filosofo.pais.nombre;
+    let armaSpan = document.createElement("span");
+    armaSpan.textContent = "Arma: ";
 
-            divPais.append(banderaImg, banderaSpan);
-            filaInfo.append(divPais);
+    let armaFilosofo = document.createElement("span");
+    armaFilosofo.textContent = filosofo.arma;
 
-            //* Añadimos info de la corriente a filaInfo
-            let divCorriente = document.createElement("div");
-            divCorriente.classList.add("info-corriente");
-            
-            let corrienteSpan = document.createElement("span");
-            corrienteSpan.textContent = "Corriente: ";
+    divArma.append(armaSpan, armaFilosofo);
+    filaInfo.append(divArma);
 
-            let corrienteFilosofo = document.createElement("span");
-            corrienteFilosofo.textContent = filosofo.corriente;
-            
-            divCorriente.append(corrienteSpan, corrienteFilosofo);
-            filaInfo.append(divCorriente);
-            
+    //* Añadimos caja de habilidades
+    let habilidadesDiv = document.createElement("div");
+    habilidadesDiv.classList.add("skills");
 
-            //* Añadimos info del arma a filaInfo
-            let divArma = document.createElement("div");
-            divArma.classList.add("info-arma"); 
-            
-            let armaSpan = document.createElement("span");
-            armaSpan.textContent = "Arma: ";
+    //* Añadimos una a una las habilidades
+    for (let infoHabilidad of filosofo.habilidades) {
+      //* Añadimos una caja de habilidad
+      let habilidadDiv = document.createElement("div");
+      habilidadDiv.classList.add("skill");
 
-            let armaFilosofo = document.createElement("span");
-            armaFilosofo.textContent = filosofo.arma;
+      //* 1.Icono de habilidad
+      let habilidadIcon = document.createElement("img");
+      habilidadIcon.setAttribute("src", "https://via.placeholder.com/16");
+      habilidadDiv.setAttribute("alt", `Icono de ${infoHabilidad.habilidad}`);
 
-            divArma.append(armaSpan, armaFilosofo);
-            filaInfo.append(divArma);
+      //* 2.Etiqueta de habilidad
+      let habilidadSpan = document.createElement("span");
+      habilidadSpan.textContent = infoHabilidad.habilidad;
 
+      //* 3.Barra de habilidad
+      let skillBarDiv = document.createElement("div");
+      skillBarDiv.classList.add("skill-bar");
 
-            //* Añadimos caja de habilidades
-            let habilidadesDiv = document.createElement('div');
-            habilidadesDiv.classList.add('skills');
+      let skillBar = document.createElement("div");
+      skillBar.classList.add("level");
+      skillBar.setAttribute(
+        "style",
+        `width: ${(infoHabilidad.nivel / 4) * 100}%;`
+      );
 
+      skillBarDiv.append(skillBar);
 
-            // info.append(habilidades);
-
-
-            //* Añadimos una a una las habilidades
-            for (let infoHabilidad of filosofo.habilidades) {
-
-                //* Añadimos una caja de habilidad
-                let habilidadDiv = document.createElement("div");            
-                habilidadDiv.classList.add("skill");
-
-
-                //* 1.Icono de habilidad
-                let habilidadIcon = document.createElement("img");
-                habilidadIcon.setAttribute("src", "https://via.placeholder.com/16");
-                habilidadDiv.setAttribute("alt", `Icono de ${infoHabilidad.habilidad}`);
-
-                
-                //* 2.Etiqueta de habilidad
-                let habilidadSpan = document.createElement("span");
-                habilidadSpan.textContent = infoHabilidad.habilidad;
-                
-                //* 3.Barra de habilidad
-                let skillBarDiv = document.createElement("div");
-                skillBarDiv.classList.add("skill-bar");
-
-                let skillBar = document.createElement("div");
-                skillBar.classList.add("level");
-                skillBar.setAttribute("style", `width: ${infoHabilidad.nivel / 4 * 100 }%;`) 
-
-                skillBarDiv.append(skillBar);
-
-                //* Poner todo dentro:
-                habilidadDiv.append(habilidadIcon, habilidadSpan, skillBarDiv);
-                habilidadesDiv.append(habilidadDiv); 
-            }
-
-            info.append(habilidadesDiv)
-            let botonEliminar = document.createElement("div"); 
-
-            botonEliminar.innerHTML=  "&#x2716";
-            botonEliminar.classList.add("botonEliminar");
-
-            botonEliminar.addEventListener("click", eliminarTarjeta);
-
-            tarjeta.append(botonEliminar);
-
-
-            //* Añadimos tarjeta creada al contenedor de tarjetas
-            let contenedor = document.querySelector('.cards-container');
-            contenedor.append(tarjeta);
-
-        })
-
+      //* Poner todo dentro:
+      habilidadDiv.append(habilidadIcon, habilidadSpan, skillBarDiv);
+      habilidadesDiv.append(habilidadDiv);
     }
 
-    function eliminarTarjeta(e) {
-        e.target.parentElement.remove();
-    }
+    info.append(habilidadesDiv);
+    let botonEliminar = document.createElement("div");
 
+    botonEliminar.innerHTML = "&#x2716";
+    botonEliminar.classList.add("botonEliminar");
 
+    botonEliminar.addEventListener("click", eliminarTarjeta);
 
-    function ordenarNombreAZ() {
+    tarjeta.append(botonEliminar);
 
-        let tarjetas = Array.from(document.querySelectorAll('.card'));
-
-        let tarjetasOrdenadas = tarjetas.sort((tarjetaA, tarjetaB) => {
-            let nombre1 = tarjetaA.querySelector('h3').innerHTML;
-            let nombre2 = tarjetaB.querySelector('h3').innerHTML;
-            return nombre1.localeCompare(nombre2);
-        });
-
-        // Eliminar totes les targetes de l'array 'tarjeta'
-        for (let tarjeta of tarjetas) {
-            tarjeta.remove();
-        }
-
-
-        // Afegir 'tarjetasOrdenadas' al contenidor de cards
-        let contenedor = document.querySelector('.cards-container');
-        
-        for (let tarjeta of tarjetasOrdenadas) {
-            contenedor.append(tarjeta);
-        }
-
-    }
-
-
-    function ordenarNombreZA() {
-
-        let tarjetas = Array.from(document.querySelectorAll('.card'));
-
-
-        let tarjetasOrdenadasZA = tarjetas.sort((tarjetaA, tarjetaB) => {
-            let nombre1 = tarjetaA.querySelector('h3').innerHTML;
-            let nombre2 = tarjetaB.querySelector('h3').innerHTML;
-            return nombre2.localeCompare(nombre1);
-        });
-
-        for (let tarjeta of tarjetas) {
-            tarjeta.remove();
-        }
-
-        let contenedor = document.querySelector('.cards-container');
-        
-        for (let tarjeta of tarjetasOrdenadasZA) {
-            contenedor.append(tarjeta);
-        }
-
-    }
-
-
-    function crearNuevaTarjeta(event) {
-
-        event.preventDefault();
-
-        const habilidades = document.querySelectorAll(".create-card-form .skills");
-
-        let nuevoFilosofo = {
-            "nombre": document.querySelector('.create-card-form .nombre').value,
-            "imagen": document.querySelector('.create-card-form .foto').value,
-            "pais": {
-                "nombre": document.querySelector('.create-card-form .pais').value,
-                "bandera": document.querySelector(".create-card-form .bandera").value,
-            },
-            "arma": document.getElementById("weapon").value,
-            "habilidades": [
-                {
-                    "habilidad":"Sabiduría",
-                    "nivel": habilidades[0].value
-                },
-                {
-                    "habilidad":"Oratoria",
-                    "nivel": habilidades[1].value
-                },
-                {
-                    "habilidad":"Lógica",
-                    "nivel": habilidades[2].value
-                },
-                {
-                    "habilidad":"Innovación",
-                    "nivel": habilidades[3].value
-                }
-            ]
-        };
-
-        // Completar la función
-
-
-
-        crearTarjetas([nuevoFilosofo]);
-
-    }
-
-    function parsearTarjetas(tarjetas){
-
-        let filosofosParseados = [];
-
-        for (let tarjeta of tarjetas){
-
-            let filosofo = {};
-            filosofo.nombre = tarjeta.querySelector('.nombre').innerHTML;
-            filosofo.imagen = tarjeta.querySelector('.photo').src;
-            filosofo.pais = {};
-            // Completar funció
-            
-            let habilidades = tarjeta.querySelectorAll('.skill');
-
-            for (let habilidad of habilidades){
-                let habilidadParaGuardar = {};
-            // Completar funció
-        }
-        filosofosParseados.push(filosofo);
-    }
-
-    return filosofosParseados;
+    //* Añadimos tarjeta creada al contenedor de tarjetas
+    let contenedor = document.querySelector(".cards-container");
+    contenedor.append(tarjeta);
+  });
 }
 
-function guardarTarjetas(){
-
-    let tarjetas = Array.from(document.querySelectorAll('.card'));
-    localStorage.setItem('tarjetas',JSON.stringify(parsearTarjetas(tarjetas)));
-
+function eliminarTarjeta(e) {
+  e.target.parentElement.remove();
 }
 
+function ordenarNombreAZ() {
+  let tarjetas = Array.from(document.querySelectorAll(".card"));
+
+  let tarjetasOrdenadas = tarjetas.sort((tarjetaA, tarjetaB) => {
+    let nombre1 = tarjetaA.querySelector("h3").innerHTML;
+    let nombre2 = tarjetaB.querySelector("h3").innerHTML;
+    return nombre1.localeCompare(nombre2);
+  });
+
+  // Eliminar totes les targetes de l'array 'tarjeta'
+  for (let tarjeta of tarjetas) {
+    tarjeta.remove();
+  }
+
+  // Afegir 'tarjetasOrdenadas' al contenidor de cards
+  let contenedor = document.querySelector(".cards-container");
+
+  for (let tarjeta of tarjetasOrdenadas) {
+    contenedor.append(tarjeta);
+  }
+}
+
+function ordenarNombreZA() {
+  let tarjetas = Array.from(document.querySelectorAll(".card"));
+
+  let tarjetasOrdenadasZA = tarjetas.sort((tarjetaA, tarjetaB) => {
+    let nombre1 = tarjetaA.querySelector("h3").innerHTML;
+    let nombre2 = tarjetaB.querySelector("h3").innerHTML;
+    return nombre2.localeCompare(nombre1);
+  });
+
+  for (let tarjeta of tarjetas) {
+    tarjeta.remove();
+  }
+
+  let contenedor = document.querySelector(".cards-container");
+
+  for (let tarjeta of tarjetasOrdenadasZA) {
+    contenedor.append(tarjeta);
+  }
+}
+
+function crearNuevaTarjeta(event) {
+  event.preventDefault();
+  const habilidades = document.querySelectorAll(".create-card-form .skills");
+
+  let nuevoFilosofo = {
+    nombre: document.querySelector(".create-card-form .nombre").value,
+    imagen: document.querySelector(".create-card-form .foto").value,
+    pais: {
+      nombre: document.querySelector(".create-card-form .pais").value,
+      bandera: document.querySelector(".create-card-form .bandera").value,
+    },
+    arma: document.getElementById("weapon").value,
+    habilidades: [
+      {
+        habilidad: "Sabiduría",
+        nivel: habilidades[0].value,
+      },
+      {
+        habilidad: "Oratoria",
+        nivel: habilidades[1].value,
+      },
+      {
+        habilidad: "Lógica",
+        nivel: habilidades[2].value,
+      },
+      {
+        habilidad: "Innovación",
+        nivel: habilidades[3].value,
+      },
+    ],
+  };
+
+  crearTarjetas([nuevoFilosofo]);
+}
+
+function parsearTarjetas(tarjetas) {
+  let filosofosParseados = [];
+
+  for (let tarjeta of tarjetas) {
+    let filosofo = {
+      nombre: tarjeta.querySelector(".nombre").innerHTML,
+      imagen: tarjeta.querySelector(".photo").src,
+      pais: {
+        nombre: tarjeta.querySelector(".pais").innerHTML,
+        bandera: tarjeta.querySelector("img").src,
+      },
+      arma: tarjeta.querySelector(".info-arma").children[0].innerHTML,
+      habilidades: [
+        {
+          habilidad: "Sabiduría",
+          nivel:
+            (parseInt(
+              tarjeta
+                .getElementsByClassName("level")[0]
+                .getAttribute("style")
+                .match(/\d+/)[0]
+            ) *
+              4) /
+            100,
+        },
+        {
+          habilidad: "Oratoria",
+          nivel:
+            (parseInt(
+              tarjeta
+                .getElementsByClassName("level")[1]
+                .getAttribute("style")
+                .match(/\d+/)[0]
+            ) *
+              4) /
+            100,
+        },
+        {
+          habilidad: "Lógica",
+          nivel:
+            (parseInt(
+              tarjeta
+                .getElementsByClassName("level")[2]
+                .getAttribute("style")
+                .match(/\d+/)[0]
+            ) *
+              4) /
+            100,
+        },
+        {
+          habilidad: "Innovación",
+          nivel:
+            (parseInt(
+              tarjeta
+                .getElementsByClassName("level")[3]
+                .getAttribute("style")
+                .match(/\d+/)[0]
+            ) *
+              4) /
+            100,
+        },
+      ],
+    };
+
+    filosofosParseados.push(filosofo);
+  }
+
+  return filosofosParseados;
+}
+
+function guardarTarjetas() {
+  let tarjetas = Array.from(document.querySelectorAll(".card"));
+  localStorage.setItem("tarjetas", JSON.stringify(parsearTarjetas(tarjetas)));
+}
 
 function cargarTarjetas() {
+  const tarjetas = JSON.parse(localStorage.getItem("tarjetas"));
+  crearTarjetas(tarjetas);
 }
 
 const filosofos = [
-
-    {
-
-        nombre: "Platón",
-        imagen: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Plato_Pio-Clemetino_Inv305.jpg/1200px-Plato_Pio-Clemetino_Inv305.jpg",
-        pais: {
-            nombre: "Grecia",
-            bandera: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Greece.svg/640px-Flag_of_Greece.svg.png"
-        },
-        corriente: "Idealismo",
-        arma: "Dialéctica",
-        habilidades: [{
-            habilidad: "Sabiduría",
-            nivel: 4
-        },
-        {
-            habilidad: "Oratoria",
-            nivel: 4
-        },
-        {
-            habilidad: "Lógica",
-            nivel: 3
-        },
-        {
-            habilidad: "Innovación",
-            nivel: 4
-        }
-        ]
-
+  {
+    nombre: "Platón",
+    imagen:
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Plato_Pio-Clemetino_Inv305.jpg/1200px-Plato_Pio-Clemetino_Inv305.jpg",
+    pais: {
+      nombre: "Grecia",
+      bandera:
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Greece.svg/640px-Flag_of_Greece.svg.png",
     },
-    {
-
-        nombre: "Aristóteles",
-        imagen: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdXUwy_fFGOJ2vwOMpwtJPyXc9HVb06HSRsbembn7IPKq6D1YitIra2WFM4Gu2rm6yHRs&usqp=CAU",
-        pais: {
-            nombre: "Grecia",
-            bandera: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Greece.svg/640px-Flag_of_Greece.svg.png"
-        },
-        corriente: "Naturalismo",
-        arma: "Lógica",
-        habilidades: [{
-            habilidad: "Sabiduría",
-            nivel: 4
-        },
-        {
-            habilidad: "Oratoria",
-            nivel: 3
-        },
-        {
-            habilidad: "Lógica",
-            nivel: 4
-        },
-        {
-            habilidad: "Innovación",
-            nivel: 3
-        }
-        ]
+    corriente: "Idealismo",
+    arma: "Dialéctica",
+    habilidades: [
+      {
+        habilidad: "Sabiduría",
+        nivel: 4,
+      },
+      {
+        habilidad: "Oratoria",
+        nivel: 4,
+      },
+      {
+        habilidad: "Lógica",
+        nivel: 3,
+      },
+      {
+        habilidad: "Innovación",
+        nivel: 4,
+      },
+    ],
+  },
+  {
+    nombre: "Aristóteles",
+    imagen:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdXUwy_fFGOJ2vwOMpwtJPyXc9HVb06HSRsbembn7IPKq6D1YitIra2WFM4Gu2rm6yHRs&usqp=CAU",
+    pais: {
+      nombre: "Grecia",
+      bandera:
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Greece.svg/640px-Flag_of_Greece.svg.png",
     },
-    {
-        nombre: "Descartes",
-        imagen: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Frans_Hals_-_Portret_van_Ren%C3%A9_Descartes.jpg/800px-Frans_Hals_-_Portret_van_Ren%C3%A9_Descartes.jpg",
-        pais: {
-            nombre: "Francia",
-            bandera: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Flag_of_France.svg/1280px-Flag_of_France.svg.png"
-        },
-        corriente: "Racionalismo",
-        arma: "Meditación",
-        habilidades: [{
-            habilidad: "Sabiduría",
-            nivel: 3
-        },
-        {
-            habilidad: "Oratoria",
-            nivel: 3
-        },
-        {
-            habilidad: "Lógica",
-            nivel: 2
-        },
-        {
-            habilidad: "Innovación",
-            nivel: 3
-        }
-        ]
+    corriente: "Naturalismo",
+    arma: "Lógica",
+    habilidades: [
+      {
+        habilidad: "Sabiduría",
+        nivel: 4,
+      },
+      {
+        habilidad: "Oratoria",
+        nivel: 3,
+      },
+      {
+        habilidad: "Lógica",
+        nivel: 4,
+      },
+      {
+        habilidad: "Innovación",
+        nivel: 3,
+      },
+    ],
+  },
+  {
+    nombre: "Descartes",
+    imagen:
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Frans_Hals_-_Portret_van_Ren%C3%A9_Descartes.jpg/800px-Frans_Hals_-_Portret_van_Ren%C3%A9_Descartes.jpg",
+    pais: {
+      nombre: "Francia",
+      bandera:
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Flag_of_France.svg/1280px-Flag_of_France.svg.png",
     },
-    {
-
-        nombre: "Kant",
-        imagen: "https://i.pinimg.com/736x/20/89/7f/20897f915acb5124893a278c395382ed.jpg",
-        pais: {
-            nombre: "Alemania",
-            bandera: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Flag_of_Germany.svg/255px-Flag_of_Germany.svg.png"
-        },
-        corriente: "Trascendentalismo",
-        arma: "Crítica",
-        habilidades: [{
-            habilidad: "Sabiduría",
-            nivel: 3
-        },
-        {
-            habilidad: "Oratoria",
-            nivel: 2
-        },
-        {
-            habilidad: "Lógica",
-            nivel: 3
-        },
-        {
-            habilidad: "Innovación",
-            nivel: 3
-        }
-        ]
-
+    corriente: "Racionalismo",
+    arma: "Meditación",
+    habilidades: [
+      {
+        habilidad: "Sabiduría",
+        nivel: 3,
+      },
+      {
+        habilidad: "Oratoria",
+        nivel: 3,
+      },
+      {
+        habilidad: "Lógica",
+        nivel: 2,
+      },
+      {
+        habilidad: "Innovación",
+        nivel: 3,
+      },
+    ],
+  },
+  {
+    nombre: "Kant",
+    imagen:
+      "https://i.pinimg.com/736x/20/89/7f/20897f915acb5124893a278c395382ed.jpg",
+    pais: {
+      nombre: "Alemania",
+      bandera:
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Flag_of_Germany.svg/255px-Flag_of_Germany.svg.png",
     },
-    {
-
-        nombre: "Hume",
-        imagen: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSiFZYg2MiOQSXbkBvFP-T3vW9pnhLW5qDioA&s",
-        pais: {
-            nombre: "Escocia",
-            bandera: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Flag_of_Scotland.svg/640px-Flag_of_Scotland.svg.png"
-        },
-        corriente: "Empirismo",
-        arma: "Escepticismo",
-        habilidades: [
-            {
-                habilidad: "Sabiduría",
-                nivel: 3
-            },
-            {
-                habilidad: "Oratoria",
-                nivel: 3
-            },
-            {
-                habilidad: "Lógica",
-                nivel: 3
-            },
-            {
-                habilidad: "Innovación",
-                nivel: 3
-            }
-        ]
-
+    corriente: "Trascendentalismo",
+    arma: "Crítica",
+    habilidades: [
+      {
+        habilidad: "Sabiduría",
+        nivel: 3,
+      },
+      {
+        habilidad: "Oratoria",
+        nivel: 2,
+      },
+      {
+        habilidad: "Lógica",
+        nivel: 3,
+      },
+      {
+        habilidad: "Innovación",
+        nivel: 3,
+      },
+    ],
+  },
+  {
+    nombre: "Hume",
+    imagen:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSiFZYg2MiOQSXbkBvFP-T3vW9pnhLW5qDioA&s",
+    pais: {
+      nombre: "Escocia",
+      bandera:
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Flag_of_Scotland.svg/640px-Flag_of_Scotland.svg.png",
     },
-    {
-
-        nombre: "Arendt",
-        imagen: "https://efeminista.com/wp-content/uploads/2021/09/Arendt-Hannah-1-e1576158475623.jpg",
-        pais: {
-            nombre: "Alemania",
-            bandera: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Flag_of_Germany.svg/255px-Flag_of_Germany.svg.png"
-        },
-        corriente: "Fenomenología",
-        arma: "Parresía",
-        habilidades: [
-            {
-                habilidad: "Sabiduría",
-                nivel: 3
-            },
-            {
-                habilidad: "Oratoria",
-                nivel: 2
-            },
-            {
-                habilidad: "Lógica",
-                nivel: 2
-            },
-            {
-                habilidad: "Innovación",
-                nivel: 3
-            }
-        ]
+    corriente: "Empirismo",
+    arma: "Escepticismo",
+    habilidades: [
+      {
+        habilidad: "Sabiduría",
+        nivel: 3,
+      },
+      {
+        habilidad: "Oratoria",
+        nivel: 3,
+      },
+      {
+        habilidad: "Lógica",
+        nivel: 3,
+      },
+      {
+        habilidad: "Innovación",
+        nivel: 3,
+      },
+    ],
+  },
+  {
+    nombre: "Arendt",
+    imagen:
+      "https://efeminista.com/wp-content/uploads/2021/09/Arendt-Hannah-1-e1576158475623.jpg",
+    pais: {
+      nombre: "Alemania",
+      bandera:
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Flag_of_Germany.svg/255px-Flag_of_Germany.svg.png",
     },
-    {
-
-        nombre: "Berni",
-        imagen: "./filosofos/berni.jpeg",
-        pais: {
-            nombre: "Alemania (nazi)",
-            bandera: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Flag_of_Germany.svg/255px-Flag_of_Germany.svg.png"
-        },
-        corriente: "Adiccion a las apuestas 🤑",
-        arma: "Pokemon card",
-        habilidades: [
-            {
-                habilidad: "Sabiduría",
-                nivel: 1
-            },
-            {
-                habilidad: "Oratoria",
-                nivel: 4
-            },
-            {
-                habilidad: "Lógica",
-                nivel: 3
-            },
-            {
-                habilidad: "Innovación",
-                nivel: 4
-            }
-        ]
+    corriente: "Fenomenología",
+    arma: "Parresía",
+    habilidades: [
+      {
+        habilidad: "Sabiduría",
+        nivel: 3,
+      },
+      {
+        habilidad: "Oratoria",
+        nivel: 2,
+      },
+      {
+        habilidad: "Lógica",
+        nivel: 2,
+      },
+      {
+        habilidad: "Innovación",
+        nivel: 3,
+      },
+    ],
+  },
+  {
+    nombre: "Berni",
+    imagen: "./filosofos/berni.jpeg",
+    pais: {
+      nombre: "Alemania (nazi)",
+      bandera:
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Flag_of_Germany.svg/255px-Flag_of_Germany.svg.png",
     },
-    {
+    corriente: "Adiccion a las apuestas 🤑",
+    arma: "Pokemon card",
+    habilidades: [
+      {
+        habilidad: "Sabiduría",
+        nivel: 1,
+      },
+      {
+        habilidad: "Oratoria",
+        nivel: 4,
+      },
+      {
+        habilidad: "Lógica",
+        nivel: 3,
+      },
+      {
+        habilidad: "Innovación",
+        nivel: 4,
+      },
+    ],
+  },
+  {
+    nombre: "Albharo",
+    imagen:
+      "https://scontent-mad1-1.xx.fbcdn.net/v/t39.30808-1/448278806_435270612719791_2551668111131197289_n.jpg?stp=cp0_dst-jpg_e15_q65_s120x120&_nc_cat=101&ccb=1-7&_nc_sid=6738e8&_nc_ohc=Y0ugi8b2a3kQ7kNvgF3h2x7&_nc_zt=24&_nc_ht=scontent-mad1-1.xx&_nc_gid=AfyV8DGzagJHbwY_90-VBvW&oh=00_AYDsDcaqxiLb_nZ0gkfSKm1nrEaAdRPlVSlu8SrQHjlc2g&oe=67428241",
+    pais: {
+      nombre: "Noruega",
+      bandera:
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Flag_of_Germany.svg/255px-Flag_of_Germany.svg.png",
+    },
+    corriente: "El lethal mi adiccion 🤑",
+    arma: "Cacaolat",
+    habilidades: [
+      {
+        habilidad: "Sabiduría",
+        nivel: 4,
+      },
+      {
+        habilidad: "Oratoria",
+        nivel: 3,
+      },
+      {
+        habilidad: "Lógica",
+        nivel: 3,
+      },
+      {
+        habilidad: "Innovación",
+        nivel: 3,
+      },
+    ],
+  },
 
-        nombre: "Albharo",
-        imagen: "https://scontent-mad1-1.xx.fbcdn.net/v/t39.30808-1/448278806_435270612719791_2551668111131197289_n.jpg?stp=cp0_dst-jpg_e15_q65_s120x120&_nc_cat=101&ccb=1-7&_nc_sid=6738e8&_nc_ohc=Y0ugi8b2a3kQ7kNvgF3h2x7&_nc_zt=24&_nc_ht=scontent-mad1-1.xx&_nc_gid=AfyV8DGzagJHbwY_90-VBvW&oh=00_AYDsDcaqxiLb_nZ0gkfSKm1nrEaAdRPlVSlu8SrQHjlc2g&oe=67428241",
-        pais: {
-            nombre: "Noruega",
-            bandera: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Flag_of_Germany.svg/255px-Flag_of_Germany.svg.png"
-        },
-        corriente: "El lethal mi adiccion 🤑",
-        arma: "Pala",
-        habilidades: [
-            {
-                habilidad: "Sabiduría",
-                nivel: 4
-            },
-            {
-                habilidad: "Oratoria",
-                nivel: 3
-            },
-            {
-                habilidad: "Lógica",
-                nivel: 3
-            },
-            {
-                habilidad: "Innovación",
-                nivel: 3
-            }
-        ]
-    }
-]
+  {
+    nombre: "Kris",
+    imagen:
+      "./filosofos/kris.jpeg",
+    pais: {
+      nombre: "Bolivia",
+      bandera:
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Flag_of_Germany.svg/255px-Flag_of_Germany.svg.png",
+    },
+    corriente: "La chamba me consume 😿",
+    arma: "Pala",
+    habilidades: [
+      {
+        habilidad: "Sabiduría",
+        nivel: 4,
+      },
+      {
+        habilidad: "Oratoria",
+        nivel: 4,
+      },
+      {
+        habilidad: "Lógica",
+        nivel: 4,
+      },
+      {
+        habilidad: "Innovación",
+        nivel: 4    ,
+      },
+    ],
+  },
+
+
+
+];
